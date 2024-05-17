@@ -84,13 +84,3 @@ resource "aws_route53_record" "node_exporter_lb" {
     evaluate_target_health = false
   }
 }
-
-
-# output "elb_dns_name" {
-#     value = data.aws_elb.node_exporter_lb
-# }
-
-
-# output "elb_dns_name" {
-#     value = split("-", kubernetes_service.node-exporter-service.status.0.load_balancer.0.ingress.0.hostname)[0]
-# }
