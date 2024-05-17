@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-exporter
+  namespace: default
+  labels:
+    app: node-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      nodeSelector:
+        eks.amazonaws.com/nodegroup: ne_nodepool
+      containers:
+      - name: node-exporter
+        image: quay.io/prometheus/node-exporter:latest
+        args:
+          - '--path.rootfs=/host'
+          # - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)'
+        ports:
+        - containerPort: 9100
+          protocol: TCP
+        volumeMounts:
+        - name: rootfs
+          mountPath: /host
+          readOnly: true
+      volumes:
+      - name: rootfs
+        hostPath:
+          path: /
+          type: Directory
