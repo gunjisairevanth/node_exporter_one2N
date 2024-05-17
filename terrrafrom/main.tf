@@ -230,7 +230,7 @@ resource "aws_eks_node_group" "my_node_group" {
     min_size     = 1
   }
   instance_types = ["t3.medium"] 
-  subnet_ids      = [aws_subnet.private_subnet1.id, aws_subnet.private_subnet2.id,]  # Use your private subnets
+  subnet_ids      = [aws_subnet.public_subnet1.id]  # Use your private subnets
   depends_on = [aws_eks_cluster.my_cluster]
 
    remote_access {

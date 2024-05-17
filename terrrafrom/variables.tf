@@ -19,6 +19,7 @@ variable "public_subnet1_name" {}
 
 variable "cluster_name" {}
 variable "cluster_group_name" {}
+variable "cluster_job_group_name" {}
 
 
 #################### DNS ###########################

@@ -19,6 +19,7 @@ public_subnet1_name       = "ne_vpc_public_subnet_a"
 
 cluster_name              = "ne_eks"
 cluster_group_name        = "ne_nodepool"
+cluster_job_group_name    = "ne_jobs"
 
 #################### DNS ###########################
 
