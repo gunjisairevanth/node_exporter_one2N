@@ -25,4 +25,5 @@ variable "cluster_job_group_name" {}
 #################### DNS ###########################
 
 variable "metrics_domain_name" {}
+variable "files_domain_name" {}
 variable "zone_id" {}

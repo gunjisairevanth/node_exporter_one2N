@@ -24,4 +24,5 @@ cluster_job_group_name    = "ne_jobs"
 #################### DNS ###########################
 
 metrics_domain_name       = "metrics.staytools.com"
+files_domain_name         = "files.staytools.com"
 zone_id                   = "Z03354183NMVA3RU59GLJ"

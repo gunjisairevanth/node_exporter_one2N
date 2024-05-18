@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      nodeSelector:
+        eks.amazonaws.com/nodegroup: ne_nodepool
+      initContainers:
+        - name: init-container
+          image: busybox
+          command: ['sh', '-c', 'mkdir -p /host/var/www/html']
+          volumeMounts:
+          - name: rootfs
+            mountPath: /host
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: rootfs
+          mountPath: /host
+      volumes:
+      - name: rootfs
+        hostPath:
+          path: /
+          type: Directory
