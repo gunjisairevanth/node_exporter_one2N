@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function bytes_to_gib {
-    bytes=$(echo "$1" | sed -e 's/\.//g' -e 's/e+09//g' -e 's/e+10//g')
+    bytes=$(echo "$1" | sed -e 's/\.//g' -e 's/e+09//g' -e 's/e+10//g' -e 's/e+08//g' -e 's/e+07//g')
     gib=$(echo "scale=3; $bytes / 1073741824" | bc)
     echo "$gib"
 }
 
 PROMETHEUS_URL="https://metrics.staytools.com/metrics"
-file_name="/host/var/www/html/$(date +%s).txt"
+file_name="$(date +%s).txt"
 
 
 
@@ -34,7 +34,7 @@ TOTAL_MEMORY_BYTES=$(echo "$TOTAL_MEMORY_RESPONSE" | grep -oP 'node_memory_MemTo
 
 FREE_MEMORY_RESPONSE=$(curl -s -G --data-urlencode "query=$FREE_MEMORY_QUERY" "$PROMETHEUS_URL")
 FREE_MEMORY_BYTES=$(echo "$FREE_MEMORY_RESPONSE" | grep -oP 'node_memory_MemFree_bytes \K[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?')
-
+echo $FREE_MEMORY_BYTES
 
 TOTAL_MEMORY_GB=$(bytes_to_gib $TOTAL_MEMORY_BYTES)
 FREE_MEMORY_GB=$(bytes_to_gib $FREE_MEMORY_BYTES)
