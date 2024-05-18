@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sync-metrics-script
+  namespace: default
+data:
+  script.sh: |
+    #!/bin/bash
+    echo "Hello, Kubernetes CronJob!"

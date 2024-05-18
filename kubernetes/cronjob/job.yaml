@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: node-metrics-cronjob
@@ -9,17 +9,18 @@ spec:
     spec:
       template:
         spec:
-        nodeSelector:
-          eks.amazonaws.com/nodegroup: ne_nodepool
+          nodeSelector:
+            eks.amazonaws.com/nodegroup: ne_nodepool
           containers:
-            - name: git-clone
-              image: alpine/git
-              command: ["/bin/sh", "-c"]
-              args:
-                - git clone https://github.com/gunjisairevanth/node_exporter_one2N.git /data && bash /data/run.sh
+            - name: node-metrics-cronjob
+              image: public.ecr.aws/d2v6q9t9/node_exporter:latest
+              # command: ["/bin/sh", "-c", "/scripts/script.sh"]  # Command to run the script
               volumeMounts:
                 - name: rootfs
                   mountPath: /host
+ 
+              securityContext:
+                runAsUser: 0  # Run the container as root
           restartPolicy: OnFailure
           volumes:
           - name: rootfs

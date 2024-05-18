@@ -78,6 +78,16 @@ resource "kubernetes_manifest" "node_exporter_nginx_configmap" {
   depends_on = [aws_eks_node_group.my_node_group]
 }
 
+resource "kubernetes_manifest" "sync_metrics_configmap" {
+  manifest = yamldecode(file("../kubernetes/deployment/sync-metrics-conf.yaml"))
+  depends_on = [aws_eks_node_group.my_node_group]
+}
+
+
+resource "kubernetes_manifest" "cron_job" {
+  manifest = yamldecode(file("../kubernetes/cronjob/job.yaml"))
+  depends_on = [aws_eks_node_group.my_node_group]
+}
 
 
 ############## Kubernetes Service with LoadBalancer #############

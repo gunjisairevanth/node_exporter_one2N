@@ -7,28 +7,23 @@ function bytes_to_gib {
 }
 
 PROMETHEUS_URL="https://metrics.staytools.com/metrics"
-file_name="/usr/share/nginx/html/$(date +%s).txt"
+file_name="/host/var/www/html/$(date +%s).txt"
 
 
 
 response=$(curl -s $PROMETHEUS_URL)
 if [ $? -eq 0 ]; then
     # Use grep to find lines containing CPU core usage metrics and extract the relevant information
-    cpu_lines=$(echo "$response" | grep "^node_cpu_seconds_total")
+    cpu_lines=$(echo "$response" | grep "^node_cpu_seconds_total" | grep 'mode="user"')
     while IFS= read -r line; do
         # Extract CPU number and usage from the line
-        cpu_number=$(echo "$line" | awk -F 'cpu=' '{print $2}' | awk '{print $1}')
+        cpu_number=$(echo "$line" | awk -F 'cpu=' '{print $2}' | awk '{print $1}' | awk -F '[,"]' '{print $2}')
         usage=$(echo "$line" | awk '{print $2}')
-        if echo "$cpu_number" | grep -q 'mode="user"}'; then
-            cpu_number=$(echo "$cpu_number" | awk -F '[,"]' '{print $2}')
-            echo "CPU $cpu_number Usage: $usage" >> $file_name
-        fi
+        echo "CPU $cpu_number Usage: $usage" >> $file_name
     done <<< "$cpu_lines"
 else
-    # Print an error message if the request failed
-    echo "Error: Unable to fetch metrics."
+    echo "Failed to retrieve metrics from Prometheus"
 fi
-
 
 
 TOTAL_MEMORY_QUERY="node_memory_MemTotal_bytes"
