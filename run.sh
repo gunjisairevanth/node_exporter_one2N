@@ -7,7 +7,7 @@ function bytes_to_gib {
 }
 
 PROMETHEUS_URL="https://metrics.staytools.com/metrics"
-file_name="$(date +%s).txt"
+file_name="/host/var/www/html/$(date +%s).txt"
 
 
 
