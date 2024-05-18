@@ -73,6 +73,13 @@ resource "kubernetes_manifest" "node_exporter_nginx_deployment" {
 }
 
 
+resource "kubernetes_manifest" "node_exporter_nginx_configmap" {
+  manifest = yamldecode(file("../kubernetes/deployment/nginx-conf.yaml"))
+  depends_on = [aws_eks_node_group.my_node_group]
+}
+
+
+
 ############## Kubernetes Service with LoadBalancer #############
 
 resource "kubernetes_service" "node-exporter-service" {

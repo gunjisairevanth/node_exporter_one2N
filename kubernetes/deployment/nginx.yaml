@@ -31,9 +31,16 @@ spec:
         - containerPort: 80
           protocol: TCP
         volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
         - name: rootfs
           mountPath: /host
       volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+          defaultMode: 420
       - name: rootfs
         hostPath:
           path: /
